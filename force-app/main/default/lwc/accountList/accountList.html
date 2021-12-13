@@ -1,0 +1,17 @@
+<template>
+    <lightning-card title="Display list of accounts"  >
+        <div class="slds-m-around_medium">
+            <template if:true={accounts.data}>
+                
+                <template for:each={accounts.data} for:item="account">
+ 
+                    <a key={account.Id} account-item={account} onselected={handleNotification} href="#">{account.Name}</a>
+                 
+                </template>
+            </template>
+            <template if:true={accounts.error}>
+                <c-error-panel errors={accounts.error}></c-error-panel>
+            </template>
+            </div>
+    </lightning-card>
+</template>

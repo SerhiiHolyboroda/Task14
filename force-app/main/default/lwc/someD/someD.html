@@ -1,0 +1,13 @@
+<template>
+    <lightning-card title="Leard Products">
+   
+<ul class="slds-p-around_medium">   
+ <template for:each={products} for:item="product">
+<li key={product.Id}>
+
+    Brand: {product.Brand}<br>
+</li>
+ </template>
+</ul>
+</lightning-card>
+</template>
