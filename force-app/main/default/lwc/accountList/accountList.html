@@ -21,7 +21,7 @@
                     <!-- Default/basic -->
                     <div class="slds-p-around_medium lgc-bg">
                         <lightning-input type="text" label="Enter contact LastName  "      onchange={saveContact}  ></lightning-input>
-                        <lightning-button label="Create Contact"  onclick={createContact}    >Create Contact</lightning-button>    
+                        <lightning-button label="Create Contact"  onclick={insertContactAction}    >Create Contact</lightning-button>    
                     </div>
                 </div>
                 <!-- <template for:each={accounts.data} for:item="account">
@@ -36,13 +36,16 @@
                     </lightning-layout>
                 </template> -->
             </template>
-            <template for:each={contacts.data} for:item="contact">
-                <p key={contact.Id}  onliclick={hanldeProgressValueChange} >{contact.Name}</p>
+             <!-- <template if:true={contacts.data}> -->
+            <!-- <template for:each={contacts.data} for:item="contact">
+                <p key={contact}    >{contact}</p>
              
-            </template>
-            <template if:true={accounts.error}>
-                <c-error-panel errors={accounts.error}></c-error-panel>
-            </template>
+            </template> -->
+            <template for:each={contacts} for:item="contact">
+                <div class="slds-text-heading_medium slds-m-bottom_medium" key={contact}> {contact} </div>  
+              </template>
+      <!-- //  </template> -->
+             
             <template if:true={contacts.error}>
                 <c-error-panel errors={contacts.error}></c-error-panel>
             </template>

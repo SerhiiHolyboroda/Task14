@@ -1,19 +1,24 @@
 import { LightningElement, api, wire, track } from 'lwc';
+import { createRecord } from 'lightning/uiRecordApi';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import relatedContacts from '@salesforce/apex/relatedContacts.getRelatedContacts'; 
 import getAccounts from '@salesforce/apex/getAccountList.getAccounts'; 
 import createCon from '@salesforce/apex/createC.createCon'; 
+import conMainObject from '@salesforce/schema/Contact';
+import conAccId from '@salesforce/schema/Contact.AccountId';
+import conLastName from '@salesforce/schema/Contact.LastName';
 export default class AccountList extends LightningElement {
-   @api accounId;
-   @api    contacts
+   @api AccountId;
+  // @api contacts
    contactNew
-    @track contacts
+   res
     @wire(getAccounts)
     accounts;
-    @wire(relatedContacts)
-    contacts;
+    // @wire(relatedContacts)
+    // contacts ;
     @track boolVisible = false;  
  
-
+    @track contacts  = [];;
     accId;
 
 
@@ -33,45 +38,80 @@ export default class AccountList extends LightningElement {
     
     }
     createContact(){
-      console.log(   this.accId,   this.contactNew);
+      console.log(   this.accId,   this.contactNew + 'parameters to input');
        
-       (createCon, { acc:  this.accId, name:  this.contactNew})
-      
+     createCon({ acc:  this.accId, name:  this.contactNew})
+       .then((result) => {
+         
+          console.log(result);
+         
+          console.log(this.contacts);
+      })
       }
 
     handleclick(event) {
-      console.log(this.contacts)
-      console.log(event.target.dataset.id);
+      
+       this.AccountId =  event.target.dataset.id ;
+      
+      relatedContacts({  AccountId: this.AccountId  })
+      .then((result) => {
+       // console.log(JSON.stringify(JSON.stringify(result)) +'first');
+         this.contacts = [];
+result.forEach(element => {
+  console.log( element.Name )
+  this.contacts.push(element.Name);
+   
  
-      event.preventDefault();
-      this.accounId =  event.target.dataset.id ;
-      console.log(this.accounId + '  event.target.value ');
-     //relatedContacts(event.target.dataset.id);
-     relatedContacts({
-      recordId: event.target.dataset.id 
   })
-  .then((result) => {
-    console.log(this.contacts);
-      console.log(result);
-      this.contacts = result;
-      console.log(this.contacts);
+  console.log(this.contacts + ' this.contacts')
+    
+     
   })
-  .catch((error) => {
-      console.log(error);
-  })
-  .finally(() => {
-      console.log('Finally');
-  })
-      // const selectedEvent = new CustomEvent('onlick', {
-      //   detail:  this.accounId
-      // });
-      this.dispatchEvent(new CustomEvent('selected', {detail: this.event.target.dataset.id}));
-      // Dispatches the event.
-   //   this.dispatchEvent(selectedEvent);
+     // event.preventDefault();
+       console.log(this.contacts + '')
+   
+   console.log(this.contacts + ' this.contacts')
       console.log('we are here now !!!');
     }
 
 
     
     
-      }
+
+    insertContactAction(){
+
+      console.log( this.accId,   this.contactNew );
+      const fields = {};
+      fields[conLastName.fieldApiName] = this.contactNew;
+      fields[conAccId.fieldApiName] = this.accId;
+       
+     
+      const recordInput = { apiName: conMainObject.objectApiName, fields };
+      createRecord(recordInput)
+          .then(contactobj=> {
+              this.contactId = contactobj.id;
+              this.dispatchEvent(
+                  new ShowToastEvent({
+                      title: 'Success',
+                      message: 'Contact record has been created',
+                      variant: 'success',
+                  }),
+              );
+              
+
+
+          })
+          .catch(error => {
+              this.dispatchEvent(
+                  new ShowToastEvent({
+                      title: 'Error creating record',
+                      message: error.body.message,
+                      variant: 'error',
+                  }),
+              );
+          });
+  }
+
+}
+ 
+ 

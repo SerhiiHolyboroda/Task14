@@ -1,6 +1,7 @@
 public with sharing class createC {
-    @AuraEnabled(cacheable=true)
-    public static void createCon(ID acc , String name) {
+    @AuraEnabled()
+
+    public static void createCon(String acc , String name) {
         try {
         Contact con = new Contact(
             FirstName=name,
