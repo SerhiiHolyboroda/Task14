@@ -1,20 +1,19 @@
-import { LightningElement, api, wire } from 'lwc';
+import { LightningElement, api, wire , track} from 'lwc';
 import relatedContacts from '@salesforce/apex/relatedContacts.getRelatedContacts'; 
 import SystemModstamp from '@salesforce/schema/Account.SystemModstamp';
 export default class RelatedContacts extends LightningElement {
-    selectedAccount;
-    @api account;
+ @api selectedAccount;
    
-    // @wire(relatedContacts)
-    // contacts;
+   
+     @wire(relatedContacts)
+     contacts;
   
-
-    handleNotification(event) {
-      console.log( 'dsadsa');
-        alert(event.detail);
-        this.selectedAccount = event.detail;
-        console.log(this.selectedAccount);
-        alert(this.selectedAccount);
-        relatedContacts(this.selectedAccount.id);
+     handleclick(event) {
+        console.log(event + 'event in other component');
+        console.log(event.detail + 'event detail');
+        console.log(event.target.detail + 'event in other component');
+      this.selectedAccount = event.target.dataset.id;
+      console.log(  this.event.detail)
+      console.log(  event.target.dataset.id)
       }
 }

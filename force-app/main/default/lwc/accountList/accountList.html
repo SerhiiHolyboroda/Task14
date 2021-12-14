@@ -3,14 +3,48 @@
         <div class="slds-m-around_medium">
             <template if:true={accounts.data}>
                 
-                <template for:each={accounts.data} for:item="account">
+             <template for:each={accounts.data} for:item="account">
  
-                    <a key={account.Id} account-item={account} onselected={handleNotification} href="#">{account.Name}</a>
-                 
-                </template>
+                    <p key={account.Id}  data-id={account.Id}    >{account.Name}</p>
+                    <lightning-button key={account.Id} data-id={account.Id} label="Show realted contacts"  onclick={handleclick}></lightning-button> 
+                    <lightning-button key={account.Id} data-id={account.Id} label="Add new contact"  onclick={handlethisclick}>Add Contact</lightning-button>   
+                
+             
+                         
+                  
+                </template>  
+                <div class="slds-m-top_medium slds-m-bottom_x-large"     if:true={boolVisible}  >
+                    <h2 class="slds-text-heading_medium slds-m-bottom_medium">
+                        Input New Contact last name.
+                    </h2>
+            
+                    <!-- Default/basic -->
+                    <div class="slds-p-around_medium lgc-bg">
+                        <lightning-input type="text" label="Enter contact LastName  "      onchange={saveContact}  ></lightning-input>
+                        <lightning-button label="Create Contact"  onclick={createContact}    >Create Contact</lightning-button>    
+                    </div>
+                </div>
+                <!-- <template for:each={accounts.data} for:item="account">
+                    <lightning-layout multiple-rows key={account.Id}>
+                        <lightning-layout-item size="12" small-device-size="6"   object-api-name="Account" data-id={account.id} medium-device-size="4" large-device-size="4" padding="around-small">
+                            {account.Name}
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="4" padding="around-small">
+                            <lightning-button name={account.Id}  data-id={account.id}  label="Navigate - Approach 1" onclick={handleclick}></lightning-button>
+                           <lightning-button data-id={account.Id} label="Navigate - Approach 1" onclick={handleclick}></lightning-button>  
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </template> -->
+            </template>
+            <template for:each={contacts.data} for:item="contact">
+                <p key={contact.Id}  onliclick={hanldeProgressValueChange} >{contact.Name}</p>
+             
             </template>
             <template if:true={accounts.error}>
                 <c-error-panel errors={accounts.error}></c-error-panel>
+            </template>
+            <template if:true={contacts.error}>
+                <c-error-panel errors={contacts.error}></c-error-panel>
             </template>
             </div>
     </lightning-card>

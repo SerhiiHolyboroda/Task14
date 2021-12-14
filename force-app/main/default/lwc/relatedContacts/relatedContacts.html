@@ -3,13 +3,17 @@
         <div class="slds-m-around_medium">
             <template if:true={contacts.data}>
                 <template for:each={contacts.data} for:item="contact">
-                    <p key={contact.Id}  >{contact.Name}</p>
+                    <p key={contact.Id}  onclick={hanldeProgressValueChange} >{contact.Name}</p>
                  
                 </template>
+                <p
+                onclick={hanldeProgressValueChange}
+          >22</p>
             </template>
             <template if:true={contacts.error}>
                 <c-error-panel errors={contacts.error}></c-error-panel>
             </template>
+             
         </div>
     </lightning-card>
 </template>
